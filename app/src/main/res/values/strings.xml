@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="centimeters">Centimeters</string>
+    <string name="feet_inches"><![CDATA[Feet & Inches]]></string>
+    <string name="convert">Convert</string>
+    <string name="name">Name</string>
+    <string name="meters">meters</string>
+    <string name="pounds">Pounds</string>
+    <string name="kilograms">Kilograms</string>
+    <string name="piano">piano</string>
+</resources>

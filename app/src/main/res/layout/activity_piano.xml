@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PianoActivity">
+
+    <ImageView
+        android:id="@+id/pianoPicture"
+        android:layout_width="769dp"
+        android:layout_height="349dp"
+        android:contentDescription="@string/piano"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/piano_keyboard" />
+
+    <Button
+        android:id="@+id/middleCKey"
+        android:layout_width="52dp"
+        android:layout_height="220dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleDKey"
+        android:layout_width="52dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/middleCKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleEKey"
+        android:layout_width="52dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/middleDKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleFKey"
+        android:layout_width="45dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/middleEKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleGKey"
+        android:layout_width="49dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/middleFKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleAKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/middleGKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleBKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/middleAKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highCKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/middleBKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highDKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/highCKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highEKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/highDKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highFKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/highEKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highGKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/highFKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highAKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/highGKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highBKey"
+        android:layout_width="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="65dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@+id/highAKey"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleCSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleFSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginLeft="216dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleGSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="264dp"
+        android:layout_marginLeft="264dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highCSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="416dp"
+        android:layout_marginLeft="416dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highDSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="464dp"
+        android:layout_marginLeft="464dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highGSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="616dp"
+        android:layout_marginLeft="616dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highASharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="664dp"
+        android:layout_marginLeft="664dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/highFSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="564dp"
+        android:layout_marginLeft="564dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleASharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="316dp"
+        android:layout_marginLeft="316dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+    <Button
+        android:id="@+id/middleDSharpKey"
+        android:layout_width="34dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="64dp"
+        android:onClick="playSound"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="@+id/pianoPicture"
+        app:layout_constraintTop_toTopOf="@+id/pianoPicture" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
