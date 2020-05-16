@@ -8,4 +8,12 @@
     <string name="pounds">Pounds</string>
     <string name="kilograms">Kilograms</string>
     <string name="piano">piano</string>
+    <string name="add">Add</string>
+    <string name="entry_to_add">Entry to add</string>
+    <string name="add_to_end">Add to End</string>
+    <string name="change_title">Change Title</string>
+    <string name="title">Title</string>
+    <string name="save">Save</string>
+    <string name="add_item">Add Item</string>
+    <string name="load">Load</string>
 </resources>

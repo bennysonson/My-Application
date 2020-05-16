@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent myIntent3 = new Intent(MainActivity.this, PianoActivity.class);
                 startActivity(myIntent3);
                 return true;
+            case R.id.item4:
+                Toast.makeText(this, "List Maker selected", Toast.LENGTH_SHORT).show();
+                Intent myIntent4 = new Intent(MainActivity.this, ListMaker.class);
+                startActivity(myIntent4);
+                return true;
              default:
                 return super.onOptionsItemSelected(item);
 

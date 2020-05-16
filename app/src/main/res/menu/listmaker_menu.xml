@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/addOption"
+        android:icon="@drawable/ic_additem"
+        android:title="@string/add_item"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/changeTitleOption"
+        android:title="@string/change_title"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/saveOption"
+        android:title="@string/save"
+        android:onClick="writeFile"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/loadOption"
+        android:title="@string/load"
+        app:showAsAction="never" />
+</menu>
