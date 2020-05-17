@@ -16,4 +16,9 @@
     <string name="save">Save</string>
     <string name="add_item">Add Item</string>
     <string name="load">Load</string>
+    <string name="add_to_spot">ADD TO SPOT</string>
+    <string name="position_in_list">Position in list</string>
+    <string name="remove_item" />
+    <string name="remove">Remove</string>
+    <string name="rank_to_remove">Rank to remove</string>
 </resources>

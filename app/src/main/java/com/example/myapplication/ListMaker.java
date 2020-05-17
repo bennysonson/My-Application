@@ -1,8 +1,5 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,22 +7,21 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,10 +41,10 @@ public class ListMaker extends AppCompatActivity {
         titleText = findViewById(R.id.titleText);
         entryText = findViewById(R.id.entryText);
         titleText.setText(title);
-  //      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    //            != PackageManager.PERMISSION_GRANTED) {
-     //       requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
-     //   }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
+        }
     }
 
     @Override
@@ -78,13 +74,14 @@ public class ListMaker extends AppCompatActivity {
                 Intent i = new Intent(this, AddToList.class);
                 startActivityForResult(i, 1);
                 return true;
+            case R.id.removeOption:
+                Toast.makeText(this, "Remove an item from the list", Toast.LENGTH_SHORT).show();
+                Intent i3 = new Intent(this, RemoveFromList.class);
+                startActivityForResult(i3, 3);
+                return true;
             case R.id.changeTitleOption:
                 Intent i2 = new Intent(this, ChangeTitle.class);
                 startActivityForResult(i2, 2);
-                return true;
-            case R.id.loadOption:
-                Intent i3 = new Intent(this, LoadList.class);
-                startActivityForResult(i3, 3);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -98,8 +95,17 @@ public class ListMaker extends AppCompatActivity {
             //Add entry to list
             case 1:
                 if (resultCode == RESULT_OK) {
-                    ListEntry e = new ListEntry(list.size() + 1, dataIntent.getStringExtra("entry"));
-                    list.add(e);
+                    try {
+                        int position = Integer.valueOf(dataIntent.getStringExtra("position"));
+                        ListEntry entry = new ListEntry(position, dataIntent.getStringExtra("entry"));
+                        list.add(position - 1, entry);
+                        for (int i = position; i < list.size(); i++) {
+                            list.get(i).setRank(i + 1);
+                        }
+                    } catch (Exception e) {
+                        ListEntry entry = new ListEntry(list.size() + 1, dataIntent.getStringExtra("entry"));
+                        list.add(entry);
+                    }
                     entryText.setText(sbToString());
                 }
                 break;
@@ -110,6 +116,7 @@ public class ListMaker extends AppCompatActivity {
                     titleText.setText(title);
                 }
                 break;
+            //Load selected file
             case 42:
                 if (resultCode == RESULT_OK) {
                     if (dataIntent != null) {
@@ -122,90 +129,60 @@ public class ListMaker extends AppCompatActivity {
                         readText(path);
                     }
                 }
+                break;
+            case 3:
+                if (resultCode == RESULT_OK) {
+                    int removeIndex = Integer.valueOf(dataIntent.getStringExtra("removeChoice")) - 1;
+                    list.remove(removeIndex);
+                    for (int i = removeIndex; i < list.size(); i++) {
+                        list.get(i).setRank(i + 1);
+                    }
+                    entryText.setText(sbToString());
+                }
+                break;
         }
-    }
-
-    public StringBuilder sbToString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(list.get(i).toString());
-        }
-        return sb;
     }
 
     private void readText(String input) {
-        File file = new File(input);
         list = new ArrayList<>();
+        title = input.substring(0, input.lastIndexOf('.'));
+        titleText.setText(title);
         try {
+            File sdcard = Environment.getExternalStorageDirectory();
+            File file = new File(sdcard, input);
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
-            int i = 0;
             Scanner scan = null;
             while ((line = br.readLine()) != null) {
                 scan = new Scanner(line);
-                scan.useDelimiter("\\. {2}");
+                scan.useDelimiter("\\. ");
                 int rank = scan.nextInt();
                 String entry = scan.next();
                 ListEntry e = new ListEntry(rank, entry);
                 list.add(e);
-                i++;
             }
             if (scan != null) {
                 scan.close();
             }
             entryText.setText(sbToString());
         } catch (FileNotFoundException e) {
+            Toast.makeText(this, "FileNotFoundException", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         } catch (IOException e) {
+            Toast.makeText(this, "IOException", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
 
-    private void performFileSearch(MenuItem item) {
-        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+    public void performFileSearch(MenuItem item) {
+        Intent i = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        }
+        assert i != null;
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("text/*");
         startActivityForResult(i, 42);
-    }
-
-
-    public void load(MenuItem item) {
-        FileInputStream fis = null;
-        list = new ArrayList<>();
-        try {
-            fis = openFileInput(title);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String text;
-            int i = 0;
-            Scanner scan = null;
-            while ((text = br.readLine()) != null) {
-                scan = new Scanner(text);
-                scan.useDelimiter("\\. {2}");
-                int rank = scan.nextInt();
-                String entry = scan.next();
-                ListEntry e = new ListEntry(rank, entry);
-                list.add(e);
-                i++;
-            }
-            if (scan != null) {
-                scan.close();
-            }
-            entryText.setText(sbToString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     private boolean isExternalStorageWritable() {
@@ -218,9 +195,9 @@ public class ListMaker extends AppCompatActivity {
     }
 
     public void writeFile(MenuItem item) {
-        if (isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            File textFile = new File(Environment.getExternalStorageDirectory(), title + ".txt");
-            FileOutputStream fos = null;
+        if (isExternalStorageWritable() && checkPermission()) {
+            File textFile = new File(Environment.getExternalStorageDirectory().getPath(), title + ".txt");
+            FileOutputStream fos;
             try {
                 fos = new FileOutputStream(textFile);
                 fos.write(sbToString().toString().getBytes());
@@ -236,9 +213,17 @@ public class ListMaker extends AppCompatActivity {
         }
     }
 
-    private boolean checkPermission(String permission) {
-        int check = ContextCompat.checkSelfPermission(this, permission);
+    private boolean checkPermission() {
+        int check = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return (check == PackageManager.PERMISSION_GRANTED);
+    }
+
+    public StringBuilder sbToString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i).toString());
+        }
+        return sb;
     }
 
     private static class ListEntry {
@@ -250,31 +235,76 @@ public class ListMaker extends AppCompatActivity {
             this.rank = rank;
         }
 
+        void setRank(int i) {
+            this.rank = i;
+        }
+
         @Override
         public String toString() {
             return rank + ". " + entry + "\n";
         }
     }
 
-    public void save(MenuItem item) {
-        String text = entryText.getText().toString();
-        FileOutputStream fos = null;
-        try {
-            fos = openFileOutput(title, MODE_PRIVATE);
-            fos.write(text.getBytes());
-            Toast.makeText(this, "Saved to" + getFilesDir() + "/" + title, Toast.LENGTH_LONG).show();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+//    public void save(MenuItem item) {
+//        String text = entryText.getText().toString();
+//        FileOutputStream fos = null;
+//        try {
+//            fos = openFileOutput(title, MODE_PRIVATE);
+//            fos.write(text.getBytes());
+//            Toast.makeText(this, "Saved to" + getFilesDir() + "/" + title, Toast.LENGTH_LONG).show();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (fos != null) {
+//                try {
+//                    fos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
+
+    /*
+     public void load(MenuItem item) {
+     FileInputStream fis = null;
+     list = new ArrayList<>();
+     try {
+     fis = openFileInput(title);
+     InputStreamReader isr = new InputStreamReader(fis);
+     BufferedReader br = new BufferedReader(isr);
+     StringBuilder sb = new StringBuilder();
+     String text;
+     int i = 0;
+     Scanner scan = null;
+     while ((text = br.readLine()) != null) {
+     scan = new Scanner(text);
+     scan.useDelimiter("\\. {2}");
+     int rank = scan.nextInt();
+     String entry = scan.next();
+     ListEntry e = new ListEntry(rank, entry);
+     list.add(e);
+     i++;
+     }
+     if (scan != null) {
+     scan.close();
+     }
+     entryText.setText(sbToString());
+     } catch (FileNotFoundException e) {
+     e.printStackTrace();
+     } catch (IOException e) {
+     e.printStackTrace();
+     } finally {
+     if (fis != null) {
+     try {
+     fis.close();
+     } catch (IOException e) {
+     e.printStackTrace();
+     }
+     }
+     }
+     }
+     */
 }

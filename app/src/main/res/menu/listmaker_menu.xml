@@ -6,6 +6,11 @@
         android:title="@string/add_item"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/removeOption"
+        android:icon="@drawable/ic_removeitem"
+        android:title="@string/remove_item"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/changeTitleOption"
         android:title="@string/change_title"
         app:showAsAction="never" />
@@ -17,5 +22,6 @@
 
     <item android:id="@+id/loadOption"
         android:title="@string/load"
+        android:onClick="performFileSearch"
         app:showAsAction="never" />
 </menu>
