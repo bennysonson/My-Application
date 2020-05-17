@@ -12,8 +12,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+/**
+ * Piano with two octaves. Standard grand piano sound, up to 6 notes can be layered.
+ * Current issue with lower octave playing with static.
+ */
 public class PianoActivity extends AppCompatActivity {
 
+    private final static int MAX_STREAMS = 6;
     private SoundPool sp;
     private int middleCNote, highCNote, middleCSharpNote, highCSharpNote, middleDNote, highDNote, middleDSharpNote, highDSharpNote, middleENote,
             highENote, middleFNote, highFNote, middleFSharpNote, highFSharpNote, middleGNote, highGNote, middleGSharpNote, highGSharpNote,
@@ -31,11 +36,11 @@ public class PianoActivity extends AppCompatActivity {
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build();
             sp = new SoundPool.Builder()
-                    .setMaxStreams(6)
+                    .setMaxStreams(MAX_STREAMS)
                     .setAudioAttributes(at)
                     .build();
         } else {
-            sp = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+            sp = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0);
         }
 
         middleCNote = sp.load(this, R.raw.cmiddle, 1);

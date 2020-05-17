@@ -25,8 +25,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Create and maintain an ordered list. Items can be added and removed. Lists can be saved and
+ * loaded as a text file to internal storage. The name of files are determined by a given title
+ * to the list.
+ * @author Benson Liu
+ */
 public class ListMaker extends AppCompatActivity {
 
+    private static final int PERMISSIONS_REQUEST_CODE = 1000;
+    private static final int ADD_REQUEST_CODE = 1;
+    private static final int CHANGE_TITLE_REQUEST_CODE = 2;
+    private static final int REMOVE_REQUEST_CODE = 3;
+    private static final int FILE_SEARCH_REQUEST_CODE = 42;
     private ArrayList<ListEntry> list;
     private String title;
     private TextView titleText;
@@ -43,13 +54,13 @@ public class ListMaker extends AppCompatActivity {
         titleText.setText(title);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
+            requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1000) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
             } else {
@@ -72,16 +83,16 @@ public class ListMaker extends AppCompatActivity {
             case R.id.addOption:
                 Toast.makeText(this, "Add an item to the list", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, AddToList.class);
-                startActivityForResult(i, 1);
+                startActivityForResult(i, ADD_REQUEST_CODE);
                 return true;
             case R.id.removeOption:
                 Toast.makeText(this, "Remove an item from the list", Toast.LENGTH_SHORT).show();
                 Intent i3 = new Intent(this, RemoveFromList.class);
-                startActivityForResult(i3, 3);
+                startActivityForResult(i3, REMOVE_REQUEST_CODE);
                 return true;
             case R.id.changeTitleOption:
                 Intent i2 = new Intent(this, ChangeTitle.class);
-                startActivityForResult(i2, 2);
+                startActivityForResult(i2, CHANGE_TITLE_REQUEST_CODE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -93,16 +104,21 @@ public class ListMaker extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, dataIntent);
         switch (requestCode) {
             //Add entry to list
-            case 1:
+            case ADD_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     try {
+                        //Adding at given position
                         int position = Integer.valueOf(dataIntent.getStringExtra("position"));
+                        if (position - 1 > list.size()) {
+                                position = list.size() + 1;
+                        }
                         ListEntry entry = new ListEntry(position, dataIntent.getStringExtra("entry"));
                         list.add(position - 1, entry);
                         for (int i = position; i < list.size(); i++) {
                             list.get(i).setRank(i + 1);
                         }
                     } catch (Exception e) {
+                        //Adding at end
                         ListEntry entry = new ListEntry(list.size() + 1, dataIntent.getStringExtra("entry"));
                         list.add(entry);
                     }
@@ -110,14 +126,14 @@ public class ListMaker extends AppCompatActivity {
                 }
                 break;
             //Change title
-            case 2:
+            case CHANGE_TITLE_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     title = dataIntent.getStringExtra("title");
                     titleText.setText(title);
                 }
                 break;
             //Load selected file
-            case 42:
+            case FILE_SEARCH_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     if (dataIntent != null) {
                         Uri uri = dataIntent.getData();
@@ -130,9 +146,13 @@ public class ListMaker extends AppCompatActivity {
                     }
                 }
                 break;
-            case 3:
+            case REMOVE_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     int removeIndex = Integer.valueOf(dataIntent.getStringExtra("removeChoice")) - 1;
+                    if (removeIndex > list.size()) {
+                        Toast.makeText(this, "Remove index not within range of list", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                     list.remove(removeIndex);
                     for (int i = removeIndex; i < list.size(); i++) {
                         list.get(i).setRank(i + 1);
@@ -182,7 +202,7 @@ public class ListMaker extends AppCompatActivity {
         assert i != null;
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("text/*");
-        startActivityForResult(i, 42);
+        startActivityForResult(i, FILE_SEARCH_REQUEST_CODE);
     }
 
     private boolean isExternalStorageWritable() {

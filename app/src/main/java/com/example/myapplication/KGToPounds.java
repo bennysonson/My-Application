@@ -9,8 +9,12 @@ import android.widget.EditText;
 
 import java.text.DecimalFormat;
 
+/**
+ * Converts KG to pounds
+ */
 public class KGToPounds extends AppCompatActivity {
 
+    private static final double CONVERSION_FACTOR = 2.20462;
     private static DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
@@ -27,7 +31,7 @@ public class KGToPounds extends AppCompatActivity {
         buttonConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double pounds = Double.valueOf(editKG.getText().toString()) * 2.20462;
+                double pounds = Double.valueOf(editKG.getText().toString()) * CONVERSION_FACTOR;
                 String p = df.format(pounds) + " pounds";
                 editPounds.setText(p);
             }

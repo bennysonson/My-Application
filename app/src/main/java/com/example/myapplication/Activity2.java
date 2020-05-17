@@ -10,8 +10,14 @@ import android.widget.EditText;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+/**
+ * Converts meters to feet & inches. (ie 2 meters is 6 feet 6.74 inches)
+ */
 public class Activity2 extends AppCompatActivity {
 
+    private static final double CENT_IN_INCHES = 2.54;
+    private static final int CENT_IN_METER = 100;
+    private static final int INCHES_IN_FEET = 12;
     private static DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
@@ -28,9 +34,9 @@ public class Activity2 extends AppCompatActivity {
         buttonConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double inches = 100 * Double.valueOf(editCent.getText().toString()) / 2.54;
-                int feet = (int) inches / 12;
-                inches = inches % 12;
+                double inches = CENT_IN_METER * Double.valueOf(editCent.getText().toString()) / CENT_IN_INCHES;
+                int feet = (int) inches / INCHES_IN_FEET;
+                inches = inches % INCHES_IN_FEET;
                 String s = String.valueOf(feet) + " feet " + df.format(inches) + " inches";
                 editFeet.setText(s);
             }
